@@ -21,7 +21,6 @@
     "mongoose": "^8.0.2",
     "react": "^18",
     "react-apexcharts": "^1.4.1",
-    "react-daisyui": "^4.1.2",
     "react-dom": "^18",
     "react-hook-form": "^7.48.2",
     "tailwind-merge": "^2.0.0",
