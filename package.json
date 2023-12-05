@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/backend": "^0.34.2",
     "@clerk/nextjs": "^4.27.1",
     "@headlessui/react": "^1.7.17",
     "@radix-ui/react-label": "^2.0.2",
@@ -23,9 +24,11 @@
     "react-apexcharts": "^1.4.1",
     "react-dom": "^18",
     "react-hook-form": "^7.48.2",
+    "svix": "^1.14.0",
     "tailwind-merge": "^2.0.0",
     "tailwindcss-animate": "^1.0.7",
     "theme-change": "^2.5.0",
+    "tunnel-agent": "^0.6.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
