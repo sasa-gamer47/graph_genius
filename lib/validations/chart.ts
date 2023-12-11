@@ -1,7 +1,7 @@
 import * as z from "zod";
 
 export const ChartValidation = z.object({
-    title: z.string().nonempty().min(3, { message: "Minimum 3 characters." }).max(20, { message: 'Maximum 20 characters.' }),
+    title: z.string().nonempty().min(3, { message: "Minimum 3 characters." }).max(100, { message: 'Maximum 100 characters.' }),
     type: z.string(),
     description: z.string().nonempty().min(3).max(1000).optional(),
     tags: z.any(),

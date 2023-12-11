@@ -11,9 +11,10 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import Chart from '@/components/shared/Chart';
+// import Chart from '@/components/shared/Chart';
 import ApexChart from '@/components/shared/ApexChart';
 import { fetchCharts } from '@/lib/actions/chart.actions';
+import Link from 'next/link'
 
 
 async function Page() {
@@ -581,15 +582,17 @@ async function Page() {
                             </CardDescription>
                         </div>
                         <div className='flex gap-x-10 items-center justify-left mt-5'>
-                            {/* {card.tags.map((tag) => (
+                            {card.tags.map((tag: any) => (
                                 <button key={card.id} className='btn bg-base-300 py-0 px-10'>#{tag}</button>
-                            ))} */}
+                            ))}
                         </div>
                     </CardContent>
                     <CardFooter className='flex items-center justify-around mt-5'>
                         {/* <p>{card.createdAt}</p> */}
                         <p>{card.type}</p>
-                        <button className='btn btn-primary w-3/12'>View</button>
+                        <Link  className='btn btn-primary w-3/12' href={`/chart/${card._id}`}>
+                            <button>View</button>
+                        </Link>
                     </CardFooter>
                 </Card>
 

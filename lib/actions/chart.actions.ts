@@ -23,7 +23,7 @@ export async function createChart({ title, author, type, description, tags, opti
     try {
         connectToDB();
 
-        console.log(path, description);
+        // console.log(path, description);
         
 
 
@@ -38,7 +38,7 @@ export async function createChart({ title, author, type, description, tags, opti
             path,
         });
 
-        console.log(createdChart, 'type: ' + type);
+        // console.log(createdChart, 'type: ' + type);
         
 
         // Update User model
@@ -82,5 +82,22 @@ export async function fetchCharts(pageNumber = 1, pageSize = 20) {
         return { charts, isNext }
     } catch (error: any) {
         throw new Error(`Something went wrong while fetching posts: ${error.message}`)
+    }
+}
+
+export async function getChartById(id: string) {
+    try {
+        connectToDB()
+
+        // const charts = await Chart.find()
+
+        const chart = await Chart.findById(id)
+        
+        console.log(chart);
+        
+
+        return chart
+    } catch (error: any) {
+        throw new Error(`Something went wrong while fetching chart: ${error.message}`)
     }
 }

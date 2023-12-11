@@ -102,12 +102,12 @@ function CreateChartForm() {
         type: values.type,
         options: {
           chart: {
-            id: values.title + "#" + Math.round(Math.random() * 100000),
+            id: JSON.stringify(values.title + "#" + Math.round(Math.random() * 100000)),
           },
           xaxis: {
-            categories: values.labels,
+            categories: JSON.parse(values.labels),
           },
-          labels: values.labels,
+          labels: JSON.parse(values.labels),
         },
         series: values.datasets[0].data,
         path: "/my-charts", //pathname,
