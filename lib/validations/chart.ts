@@ -12,4 +12,5 @@ export const ChartValidation = z.object({
     series: z.any(),
     path: z.any().optional(),
     author: z.any().optional(),
+    useClasses: z.boolean().default(false),
 });

@@ -53,6 +53,8 @@ const DropdownThemeSelector = () => {
                     {availableThemes.map((availableTheme, index) => (
                         <li key={index} className={`${theme && theme == availableTheme ? 'text-amber-600' : '' }`} onClick={() => setTheme(availableTheme)}><button>{availableTheme}</button></li>
                     ))}
+                    <li>test: {theme}</li>
+                    <li>test: {document.querySelector('html')?.getAttribute('data-theme')}</li>
                 </ul>
             </div>
         

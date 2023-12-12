@@ -21,74 +21,79 @@ async function Page({ params: { id } }: { params: {  id: string} }) {
 
     const chart = await getChartById(id)
     
-    // const calcArithmeticAverage = (numbers: number[]) => {
-    //     let sum = 0
-    //     console.log('nums' + numbers);
-        
-
-    //     for (let i = 0; i < numbers.length; i++) {
-    //         sum += numbers[i]
-            
-    //     }
-
-    //     return (sum / numbers.length).toFixed(2)
-    // }
-
     // Calculate Arithmetic Average
-const calcArithmeticAverage = (...numberArrays: number[][]) => {
-    const flattenedNumbers = numberArrays.flat();
-    let sum = 0;
-
-    for (let i = 0; i < flattenedNumbers.length; i++) {
-        sum += flattenedNumbers[i];
-    }
-
-    return (sum / flattenedNumbers.length).toFixed(2);
-};
-
-// Calculate Median
-const calcMedian = (...numberArrays: number[][]) => {
-    const flattenedNumbers = numberArrays.flat();
-    const sortedNumbers = flattenedNumbers.slice().sort((a, b) => a - b);
-    const middleIndex = Math.floor(sortedNumbers.length / 2);
-
-    if (sortedNumbers.length % 2 === 0) {
-        const middleValues = sortedNumbers.slice(middleIndex - 1, middleIndex + 1);
-        return ((middleValues[0] + middleValues[1]) / 2).toFixed(2);
-    } else {
-        return sortedNumbers[middleIndex].toFixed(2);
-    }
-};
-
-// Calculate Mode
-const calcMode = (...numberArrays: number[][]) => {
-    const flattenedNumbers = numberArrays.flat();
-    const frequencyMap: { [key: number]: number } = {};
-
-    // Count the frequency of each number
-    flattenedNumbers.forEach((num) => {
-        frequencyMap[num] = (frequencyMap[num] || 0) + 1;
+// Calculate Arithmetic Average for Each Dataset
+const calcArithmeticAverage = (numberArrays: number[][]) => {
+    return numberArrays.map((numbers) => {
+        const sum = numbers.reduce((acc, num) => acc + num, 0);
+        return (sum / numbers.length).toFixed(2);
     });
+};
 
-    let mode: number[] = [];
-    let maxFrequency = 0;
+// Calculate Median for Each Dataset
+const calcMedian = (numberArrays: number[][]) => {
+    return numberArrays.map((numbers) => {
+        const sortedNumbers = numbers.slice().sort((a, b) => a - b);
+        const middleIndex = Math.floor(sortedNumbers.length / 2);
 
-    // Find the mode(s)
-    Object.keys(frequencyMap).forEach((key: any) => {
-        const frequency = frequencyMap[key]
-
-        if (frequency > maxFrequency) {
-            mode = [parseInt(key, 10)];
-            maxFrequency = frequency;
-        } else if (frequency === maxFrequency) {
-            mode.push(parseInt(key, 10));
+        if (sortedNumbers.length % 2 === 0) {
+            const middleValues = sortedNumbers.slice(middleIndex - 1, middleIndex + 1);
+            return ((middleValues[0] + middleValues[1]) / 2).toFixed(2);
+        } else {
+            return sortedNumbers[middleIndex].toFixed(2);
         }
     });
-
-    return mode.length === flattenedNumbers.length ? "No mode" : mode.map((m) => m.toFixed(2)).join(", ");
 };
 
+// Calculate Mode for Each Dataset
+const calcMode = (numberArrays: number[][]) => {
+    return numberArrays.map((numbers) => {
+        const frequencyMap: { [key: number]: number } = {};
+
+        // Count the frequency of each number
+        numbers.forEach((num) => {
+            frequencyMap[num] = (frequencyMap[num] || 0) + 1;
+        });
+
+        let mode: number[] = [];
+        let maxFrequency = 0;
+
+        // Find the mode(s)
+        Object.keys(frequencyMap).forEach((key: any) => {
+            const frequency = frequencyMap[key];
+
+            if (frequency > maxFrequency) {
+                mode = [parseInt(key, 10)];
+                maxFrequency = frequency;
+            } else if (frequency === maxFrequency) {
+                mode.push(parseInt(key, 10));
+            }
+        });
+
+        return mode.length === numbers.length ? "No mode" : mode.map((m) => m.toFixed(2)).join(", ");
+    });
+};
+
+
+
 // Example usage
+
+    let data;
+
+    if (chart.type == 'pie' || chart.type == 'donut' || chart.type == 'polarArea' || chart.type == 'radialBar') {
+        data = []
+
+        data.push(chart.series)
+    } else {
+        data = []
+
+        for (const dataset of chart.series) {
+            data.push(dataset.data)
+        }
+
+        
+    }
+
 
 
 
@@ -109,9 +114,9 @@ const calcMode = (...numberArrays: number[][]) => {
                         </CardDescription>
                         <div className="divider"></div>
                         <div className='w-full px-5 py-2 rounded-box bg-base-100'>
-                            <p>arithmetic average: {calcArithmeticAverage(chart.series)}</p>
-                            <p>mode: {calcMode(chart.series)}</p>
-                            <p>median: {calcMedian(chart.series)} </p>
+                            <p>arithmetic average: {calcArithmeticAverage(data)}</p>
+                            <p>mode: {calcMode(data)}</p>
+                            <p>median: {calcMedian(data)} </p>
                         </div>
                     </CardContent>
                     <CardFooter className='flex items-center justify-around mt-5'>

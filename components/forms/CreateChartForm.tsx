@@ -14,6 +14,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
+import { Checkbox } from "@/components/ui/checkbox"
+
+
 import { Input } from "@/components/ui/input";
 
 import { ChartValidation } from "@/lib/validations/chart";
@@ -27,7 +30,8 @@ function CreateChartForm() {
   const pathname = usePathname();
   const [datasetsCount, setDatasetsCount] = useState("1");
     const [longestDatasetData, setLongestDatasetData] = useState(0);
-    const [chartType, setChartType] = useState('line')
+  const [chartType, setChartType] = useState('line')
+  const [useClasses, setUseClasses] = useState(false)
 
   const defaultValues = {
     title: "",
@@ -184,6 +188,15 @@ function CreateChartForm() {
     }
   }, [datasetsCount, chartType]);
 
+  useEffect(() => {
+    console.log(useClasses);
+    setUseClasses(useClasses)
+
+    console.log(useClasses);
+    
+
+  }, [useClasses])
+
   const handleInputChange = (event: any, datasetIndex: number, dataIndex: number) => {
     if (dataIndex === dataInputsCount[datasetIndex].length - 1) {
       setDataInputsCount(prevDataInputsCount => {
@@ -299,6 +312,45 @@ function CreateChartForm() {
                                     setDatasetsCount(e.target.value);
                                 }} type="number" className="input input-bordered" placeholder="Datasets count" value={field.value} />
                             </FormControl>
+                            <FormDescription>
+                                {/* This is the chart title */}
+                            </FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                <FormField
+                    control={form.control}
+                    name='useClasses'
+                    render={({ field }) => (
+                      <FormItem>
+                        <label className="flex items-center justify-start">
+                            <FormLabel>
+                                <span className="text-lg text-semibold">Use classes</span>
+                            </FormLabel>
+                            <FormControl className="p-3 bg-base-100 flex item-center justify-center">
+                            {/* <Checkbox onCheckedChange={(e) => {
+                              console.log(e);
+                              
+                                    field.onChange(e);
+
+                                  
+                                    setUseClasses(true)
+                                    setUseClasses(field.value)
+                                    
+                                    
+
+                                }}  className="ml-2 checkbox checkbox-accent" checked={field.value} /> */}
+                            <input onChange={(e) => {
+                              field.onChange(e)
+                              
+                              console.log(e.target.checked);
+                              
+                              setUseClasses(e.target.checked)
+                            }} type="checkbox" checked={field.value} className="ml-2 checkbox checkbox-accent" />
+                            </FormControl>
+
+                        </label>
                             <FormDescription>
                                 {/* This is the chart title */}
                             </FormDescription>

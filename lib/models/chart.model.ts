@@ -40,8 +40,16 @@ const chartSchema = new mongoose.Schema({
                 type: [String],
                 required: true
             }
-        }
-
+        },
+        useClasses: {
+            type: Boolean,
+            default: false,
+            required: true
+        },
+        isClassFixed: {
+            type: Boolean,
+            default: false,
+        },
     },
     series: {
         type: [mongoose.Schema.Types.Mixed],
