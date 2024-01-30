@@ -54,12 +54,12 @@ const chartSchema = new mongoose.Schema({
     series: {
         type: [mongoose.Schema.Types.Mixed],
         required: true,
-    }
+    },
 
-    // author:  {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "User",
-    // },
+    author:  {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+    },
 });
 
 const Chart = mongoose.models.Chart || mongoose.model("Chart", chartSchema);

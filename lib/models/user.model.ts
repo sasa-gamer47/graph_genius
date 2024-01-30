@@ -10,17 +10,25 @@ const userSchema = new mongoose.Schema({
         unique: true,
         required: true,
     },
-    // charts: [
-    //     {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "Chart",
-    //     },
-    // ],
+    charts: [
+        {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Chart",
+        required: true,
+        default: [],
+        },
+    ],
     onboarded: {
         type: Boolean,
         default: false,
     },
+    role: {
+        type: String,
+        default: 'other',
+    },
 });
+
+
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);
 

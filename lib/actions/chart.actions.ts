@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import User from "../models/user.model";
 
 import { connectToDB } from "../mongoose";
 
@@ -46,9 +47,15 @@ export async function createChart({ title, author, type, description, tags, opti
         //   $push: { charts: createdChart._id },
         // });
 
+        await User.findByIdAndUpdate(author, {
+            $push: { charts: createdChart._id },
+        });
 
+        console.log('Successfully created!!!');
 
         revalidatePath(path || '/my-charts');
+
+        
 
         return createdChart
     } catch (error: any) {
@@ -56,16 +63,19 @@ export async function createChart({ title, author, type, description, tags, opti
     }
 }
 
-export async function fetchCharts(pageNumber = 1, pageSize = 20) {
+export async function fetchCharts(pageNumber = 1, pageSize = 20, { userId }: any) {
     try {
         connectToDB()
 
         // const charts = await Chart.find()
 
+        console.log('user_id:', userId);
+        
+
         const skipAmount = (pageNumber - 1) * pageSize;
 
   // Create a query to fetch the posts that have no parent (top-level charts) (a chart that is not a comment/reply).
-        const chartsQuery = Chart.find({ parentId: { $in: [null, undefined] } })
+        const chartsQuery = Chart.find({ parentId: { $in: [null, undefined] },  author: userId, })
             .sort({ createdAt: "desc" })
             .skip(skipAmount)
             .limit(pageSize)

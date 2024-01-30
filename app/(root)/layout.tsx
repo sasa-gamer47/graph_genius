@@ -10,8 +10,8 @@ import LeftSidebar from "@/components/shared/LeftSidebar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Threads",
-  description: "A Next.js 13 Meta Threads application",
+  title: "Graph Genius",
+  description: "A genius applications to make graphs.",
 };
 
 export default function RootLayout({

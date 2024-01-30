@@ -11,14 +11,15 @@ import { IncomingHttpHeaders } from "http";
 
 import { NextResponse } from "next/server";
 import {
-    createUser
+    createUser, deleteUserById
 } from "@/lib/actions/user.actions";
 
 // Resource: https://clerk.com/docs/integration/webhooks#supported-events
 // Above document lists the supported events
 type EventType =
     | "user.created"
-    | "email.created"
+    | "user.deleted"
+
 
 
 type Event = {
@@ -55,15 +56,20 @@ export const POST = async (request: Request) => {
         evnt = wh.verify(
         JSON.stringify(payload),
         heads as IncomingHttpHeaders & WebhookRequiredHeaders
-        ) as Event;
+      ) as Event;
+      
+      console.log('payload success');
+      
     } catch (err) {
+      console.log('payload failure');
+      
         return NextResponse.json({ message: err }, { status: 400 });
     }
 
     const eventType: EventType = evnt?.type!;
 
   // Listen organization creation event
-    if (eventType === "user.created" || eventType === "email.created") {
+    if (eventType === "user.created") {
     // Resource: https://clerk.com/docs/reference/backend-api/tag/Organizations#operation/CreateOrganization
     // Show what evnt?.data sends from above resource
         const { id, username } =
@@ -82,6 +88,35 @@ export const POST = async (request: Request) => {
                 })
 
             return NextResponse.json({ message: "User created" }, { status: 201 });
+        } catch (err) {
+            console.log(err);
+            return NextResponse.json(
+                { message: "Internal Server Error" },
+                { status: 500 }
+            );
+        }
+    }
+
+
+
+    if (eventType === "user.deleted") {
+    // Resource: https://clerk.com/docs/reference/backend-api/tag/Organizations#operation/CreateOrganization
+    // Show what evnt?.data sends from above resource
+        const { id, username } =
+            evnt?.data ?? {};
+
+        console.log('params: ', id, username);
+        
+        
+        try {
+        // @ts-ignore
+            await deleteUserById(
+                // @ts-ignore
+                {
+                    userId: id,
+                })
+
+            return NextResponse.json({ message: "User deleted" }, { status: 201 });
         } catch (err) {
             console.log(err);
             return NextResponse.json(

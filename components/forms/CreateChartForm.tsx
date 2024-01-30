@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFieldArray } from "react-hook-form";
 import * as z from "zod";
 
+
+
 import {
   Form,
   FormControl,
@@ -26,12 +28,15 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { createChart } from "@/lib/actions/chart.actions";
 
-function CreateChartForm() {
+
+function CreateChartForm({ user }: any) {
   const pathname = usePathname();
   const [datasetsCount, setDatasetsCount] = useState("1");
     const [longestDatasetData, setLongestDatasetData] = useState(0);
   const [chartType, setChartType] = useState('line')
   const [useClasses, setUseClasses] = useState(false)
+  
+  
 
   const defaultValues = {
     title: "",
@@ -90,6 +95,7 @@ function CreateChartForm() {
 
     console.log(values);
     
+        console.log('new chart ID:', JSON.parse(user)._id,);
 
     let chart;
 
@@ -115,7 +121,7 @@ function CreateChartForm() {
         },
         series: values.datasets[0].data,
         path: "/my-charts", //pathname,
-        author: "",
+        author: JSON.parse(user)._id,
       };
     } else {
       chart = {
@@ -134,10 +140,12 @@ function CreateChartForm() {
         },
         series: values.datasets,
         path: "/my-charts", //pathname,
-        author: "",
+        author: JSON.parse(user)._id,
       };
     }
 
+
+    
     const createdChart = await createChart(chart);
     console.log(createdChart);
   };

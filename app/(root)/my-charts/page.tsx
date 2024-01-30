@@ -17,6 +17,11 @@ import { fetchCharts } from '@/lib/actions/chart.actions';
 import Link from 'next/link'
 
 
+import { getUserById } from "@/lib/actions/user.actions";
+import { currentUser } from "@clerk/nextjs";
+
+
+
 async function Page() {
     
     // const sampleGraphData = [
@@ -554,9 +559,12 @@ async function Page() {
 // ];
 
 
+    
+    const user = await currentUser()
+    const userInfo = await getUserById(user?.id ? user.id : '')
 
 
-    const { charts, isNext } = await fetchCharts()
+    const { charts, isNext } = await fetchCharts(1, 20, { userId: userInfo._id })
 
     console.log('fetching charts');
     

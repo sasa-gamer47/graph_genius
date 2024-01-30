@@ -1,10 +1,18 @@
 import { SignedIn, UserButton, currentUser } from "@clerk/nextjs";
 import DropdownThemeSelector from "@/components/shared/DropdownThemeSelector";
+import { getUserById } from "@/lib/actions/user.actions";
+import { redirect } from "next/navigation";
 
 
-const Topbar = () => {
-    const user = currentUser()
+const Topbar = async () => {
+    const user = await currentUser()
     
+    const userInfo = await getUserById(user?.id ? user.id : '')
+
+    console.log('userInfo: ', userInfo)
+
+    !userInfo || !userInfo.onboarded ? redirect('/onboarding') : ''
+    console.log('user: ', user)
 
     return (
         <div className="fixed z-50 top-0 w-full h-20 flex bg-base-100 items-center justify-around shadow-lg">
